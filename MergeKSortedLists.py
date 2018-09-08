@@ -28,12 +28,12 @@ class Solution(object):
         if not lists:
             return
         while len(lists) > 1:
-            lists.insert(0, self.mergeTwoLists(lists[-1], lists[-2]))  # 合并前两个，并插入
+            lists.insert(0, self.mergeTwoLists2(lists[-1], lists[-2]))  # 合并前两个，并插入
             lists.pop()  # 依次丢掉已经合并过的链表
             lists.pop()
         return lists[0]
 
-
+    # 递归合并
     def mergeTwoLists(self, list1, list2):
         if list1 is None and list2 is None:
             return
@@ -45,6 +45,24 @@ class Solution(object):
         else:
             list2.next = self.mergeTwoLists(list1, list2.next)
             return list2
+
+    # 非递归合并
+    def mergeTwoLists2(self, list1, list2):
+        if list1 is None and list2 is None:
+            return
+        if list1 is None or list2 is None:
+            return list1 or list2
+        dummy = res = ListNode(0)
+        while list1 and list2:
+            if list1.val < list2.val:
+                res.next = ListNode(list1.val)
+                list1 = list1.next
+            else:
+                res.next = ListNode(list2.val)
+                list2 = list2.next
+            res = res.next
+        res.next = list1 or list2
+        return dummy.next
 
 
     def printList(self, head):
